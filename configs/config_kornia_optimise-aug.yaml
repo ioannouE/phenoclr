@@ -1,0 +1,124 @@
+data:
+  data_dir: "/fastdata/bi1ei/SimCLR_test_images"
+  # data_dir: "/mnt/xdrive/cooney_lab/Shared/RSE/Image_sets/Passerines-Segmented-Back-RGB-PNG"
+
+output:
+  out_dir: "embeddings/10_embeddings"
+  # out_dir: "/mnt/xdrive/cooney_lab/Shared/RSE/01_embeddings"
+
+model:
+  name: 'simclr'  # not yet configurable
+  backbone: 'resnet50'
+  weights: 'IMAGENET1K_V2' # https://pytorch.org/vision/stable/models.html
+
+  optimizer:
+    lr: 0.001
+
+  scheduler:
+    name: 'CosineAnnealingLR'  # not yet configurable
+    params:
+      T_max: 200
+      eta_min: 0.001
+
+  criterion:
+    name: 'NTXentLoss'  # not yet configurable
+    params:
+      temperature: 0.1
+
+seed: 1
+
+dataloader:
+  num_workers: 16
+  batch_size: 40
+
+train:
+  deterministic: true  # for reproducible runs
+  accelerator: 'gpu'
+  devices: 'auto' # or 1 or 2
+  max_epochs: 200
+  log_every_n_steps: 25 # ideally one log for each epoch (= number of steps per epoch)
+
+augmentations:
+  input_size: 224
+
+  transforms:
+
+    random_resize_crop:
+      enabled: true
+      learnable: true
+      size: [224, 224]
+      scale: [0.05, 1.0]  
+      p: 1.0
+    
+    color_jitter:
+      enabled: false
+      learnable: true
+      brightness: 0.4
+      contrast: 0.4
+      saturation: 0.4
+      hue: 0.1
+      p: 0.8
+    
+    grayscale:
+      enabled: true
+      learnable: true
+      p: 0.2
+    
+    gaussian_blur:
+      enabled: true
+      learnable: true
+      sigma_limit: [0.1, 2.0]
+      p: 0.5 
+    
+    vertical_flip:
+      enabled: true
+      learnable: true
+      p: 0.5
+
+    horizontal_flip:
+      enabled: true
+      learnable: true
+      p: 0.5
+
+    rotate:
+      enabled: true
+      learnable: true
+      limit: 45
+      p: 0.5
+    
+    gaussian_noise:
+      enabled: false
+      learnable: true
+      mean_range: [0, 0]
+      std_range: [0.05, 0.1]
+      p: 0.2
+    
+    normalize:
+      mean: [0.485, 0.456, 0.406]
+      std: [0.229, 0.224, 0.225]
+    
+    thin_plate_spline:
+      enabled: false
+      learnable: true
+      scale: 0.5
+      p: 0.5
+    
+    random_perspective:
+      enabled: true
+      learnable: true
+      distortion_scale: 0.5
+      p: 0.5
+    
+    random_sharpness:
+      enabled: true
+      learnable: true
+      sharpness: 0.5
+      p: 0.5
+    
+    random_posterize:
+      enabled: true
+      learnable: true
+      bits: 3
+      p: 0.5 
+
+    

@@ -1,0 +1,107 @@
+data:
+  data_dir: "/fastdata/bi1ei/Passerines-Segmented-Back-RGB-PNG" # Passerines-Segmented-Back-RGB-PNG"
+  # data_dir: "/mnt/xdrive/cooney_lab/Shared/RSE/Image_sets/Passerines-Segmented-Back-RGB-PNG"
+
+output:
+  out_dir: "embeddings/10_embeddings"
+  # out_dir: "/mnt/xdrive/cooney_lab/Shared/RSE/01_embeddings"
+
+model:
+  name: 'simclr'  # not yet configurable
+  backbone: 'resnet50'
+  weights: 'IMAGENET1K_V2' # https://pytorch.org/vision/stable/models.html
+
+  optimizer:
+    lr: 0.001
+
+  scheduler:
+    name: 'CosineAnnealingLR'  # not yet configurable
+    params:
+      T_max: 200
+      eta_min: 0.001
+
+  criterion:
+    name: 'NTXentLoss'  # not yet configurable
+    params:
+      tune: true
+      temperature: [0.05, 0.5]
+
+seed: 1
+
+dataloader:
+  num_workers: 16
+  tune: true
+  batch_size: [16, 32, 48]
+
+train:
+  deterministic: true  # for reproducible runs
+  accelerator: 'gpu'
+  devices: 'auto' # or 1 or 2
+  tune: true
+  max_epochs: [150, 200, 250]
+  log_every_n_steps: 25 # ideally one log for each epoch (= number of steps per epoch)
+  strategy: ddp
+
+augmentations:
+  input_size: 224
+
+  transforms:
+
+    random_resize_crop:
+      enabled: true
+      tune: true
+      size: [224, 256]
+      scale_min: [0.02, 0.08]
+      scale_max: [0.8, 1.0]
+      scale: [0.05, 1.0]  
+      p: 1.0
+    
+    color_jitter:
+      enabled: false
+      brightness: 0.4
+      contrast: 0.4
+      saturation: 0.4
+      hue: 0.1
+      p: 0.8
+    
+    grayscale:
+      enabled: true
+      tune: true
+      p: [0.1, 0.5] # 0.2
+    
+    gaussian_blur:
+      enabled: true
+      tune: true
+      sigma_min: [0.1, 0.5]
+      sigma_max: [1.5, 2.5]
+      sigma_limit: [0.1, 2.0]
+      p: [0.2, 0.8] # 0.5
+    
+    vertical_flip:
+      enabled: true
+      tune: true
+      p: [0.2, 0.8] # 0.5
+
+    horizontal_flip:
+      enabled: true
+      tune: true
+      p: [0.2, 0.8] # 0.5
+
+    rotate:
+      enabled: true
+      tune: true
+      limit: [30, 60]
+      p: [0.2, 0.8] # 0.5
+    
+    gaussian_noise:
+      enabled: false
+      tune: false
+      mean_range: [0, 0]
+      std_min: [0.02, 0.09]
+      std_max: [0.1, 0.3]
+      std_range: [0.05, 0.1]
+      p: [0.2, 0.8] # 0.2
+    
+    normalize:
+      mean: [0.485, 0.456, 0.406]
+      std: [0.229, 0.224, 0.225]
