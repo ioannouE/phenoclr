@@ -1,8 +1,8 @@
 data:
-  data_dir: "/Volumes/shared/cooney_lab/Shared/RSE/Multispec_test_images_5000" # /mnt/parscratch/users/bi1ei/data/Multispec_test_images_5000" # "/fastdata/bi1ei/Multispec_test_images"Multispec_test_images_5000
+  data_dir: "path/to/data/Multispec_test_images_5000"
 
 output:
-  out_dir: "/Volumes/shared/cooney_lab/Shared/Eleftherios-Ioannou/SimCLR/multispectral/" # "/mnt/parscratch/users/bi1ei/SimCLR/multispectral/"
+  out_dir: "path/to/output/multispectral/"
 
 model:
   name: 'simclr'  # not yet configurable

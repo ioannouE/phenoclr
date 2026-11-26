@@ -7,6 +7,11 @@ import yaml
 import pandas as pd
 from argparse import ArgumentParser
 import pytorch_lightning as pl
+# Make the train/ and data/ modules importable
+import sys
+_project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, os.path.join(_project_root, 'train'))
+sys.path.insert(0, os.path.join(_project_root, 'data'))
 from multispectral_data import SimCLRDataModule
 from simclr_birdcolour_kornia_spectral import SimCLRModel, plot_knn_examples
 # from simclr_birdcolour_tune_eval import generate_embeddings, plot_knn_examples

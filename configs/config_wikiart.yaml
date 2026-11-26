@@ -1,10 +1,8 @@
 data:
-  data_dir: "/fastdata/bi1ei/wikiart"
-  # data_dir: "/mnt/xdrive/cooney_lab/Shared/RSE/Image_sets/Passerines-Segmented-Back-RGB-PNG"
+  data_dir: "path/to/data/wikiart"
 
 output:
   out_dir: "embeddings/04_embeddings_mosquito"
-  # out_dir: "/mnt/xdrive/cooney_lab/Shared/RSE/01_embeddings"
 
 model:
   name: 'simclr'  # not yet configurable

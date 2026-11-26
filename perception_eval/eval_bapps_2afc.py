@@ -151,7 +151,7 @@ def _infer_backbone_from_state_dict(state_dict: dict) -> Optional[str]:
 
 def load_simclr_model(ckpt_path: str, config_path: Optional[str], device: torch.device,
                       module_path: str = "train.simclr_birdcolour_multispectral"):
-    """Load a SimCLR checkpoint from any training script.
+    """Load a PhenoCLR checkpoint from any training script.
 
     Parameters
     ----------
@@ -346,7 +346,7 @@ def evaluate_lpips_2afc(subset_dir: str, device: torch.device, batch_size: int, 
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Evaluate LPIPS and SimCLR on BAPPS 2AFC")
+    parser = argparse.ArgumentParser(description="Evaluate LPIPS and PhenoCLR on BAPPS 2AFC")
     parser.add_argument("--bapps-root", type=str, required=True,
                         help="Path to BAPPS 2AFC root, e.g., /path/PerceptualSimilarity/dataset/2afc")
     parser.add_argument("--subsets", nargs="+", default=[
@@ -364,19 +364,19 @@ def main():
     parser.add_argument("--lpips-size", type=int, default=256,
                         help="Resize HxW for LPIPS batching (e.g., 256).")
 
-    # SimCLR options
-    parser.add_argument("--eval-simclr", action="store_true", help="Evaluate SimCLR embeddings")
-    parser.add_argument("--simclr-checkpoint", type=str, default=None, help="Path to SimCLR checkpoint")
+    # PhenoCLR options
+    parser.add_argument("--eval-simclr", action="store_true", help="Evaluate PhenoCLR embeddings")
+    parser.add_argument("--simclr-checkpoint", type=str, default=None, help="Path to PhenoCLR checkpoint")
     parser.add_argument("--simclr-config", type=str, default=None,
-                        help="Path to SimCLR config YAML/JSON (optional; uses checkpoint's embedded config by default)")
+                        help="Path to PhenoCLR config YAML/JSON (optional; uses checkpoint's embedded config by default)")
     parser.add_argument("--simclr-module", type=str, default="train.simclr_birdcolour_multispectral",
                         help="Dotted module path that defines SimCLRModel, e.g. "
                              "'train.simclr_birdcolour_RGB' or 'train.simclr_birdcolour_multispectral'")
-    parser.add_argument("--simclr-input-size", type=int, default=224, help="Resize for SimCLR backbone input")
+    parser.add_argument("--simclr-input-size", type=int, default=224, help="Resize for PhenoCLR backbone input")
     parser.add_argument("--simclr-distance", type=str, default="cosine", choices=["cosine", "euclidean"],
-                        help="Distance metric for SimCLR features.")
+                        help="Distance metric for PhenoCLR features.")
     parser.add_argument("--no-simclr-normalize", action="store_true",
-                        help="Disable L2-normalization of SimCLR features before distance.")
+                        help="Disable L2-normalization of PhenoCLR features before distance.")
 
     args = parser.parse_args()
 
@@ -385,7 +385,7 @@ def main():
 
     results: Dict[str, Dict[str, float]] = {}
 
-    # Optionally load SimCLR
+    # Optionally load PhenoCLR
     simclr_model = None
     if args.eval_simclr:
         assert args.simclr_checkpoint is not None, \
@@ -432,7 +432,7 @@ def main():
             tag = f"simclr_{args.simclr_distance}{'_unnorm' if args.no_simclr_normalize else ''}"
             res[tag] = acc_simclr
             all_simclr.append(acc_simclr)
-            print(f"SimCLR[{args.simclr_distance}{', unnorm' if args.no_simclr_normalize else ''}] {subset:>16}: {acc_simclr*100:.2f}%")
+            print(f"PhenoCLR[{args.simclr_distance}{', unnorm' if args.no_simclr_normalize else ''}] {subset:>16}: {acc_simclr*100:.2f}%")
 
         results[subset] = res
 
@@ -440,7 +440,7 @@ def main():
     if all_lpips:
         print(f"LPIPS[{args.lpips_net}]  OVERALL: {np.mean(all_lpips)*100:.2f}%")
     if all_simclr:
-        print(f"SimCLR[{args.simclr_distance}{', unnorm' if args.no_simclr_normalize else ''}] OVERALL: {np.mean(all_simclr)*100:.2f}%")
+        print(f"PhenoCLR[{args.simclr_distance}{', unnorm' if args.no_simclr_normalize else ''}] OVERALL: {np.mean(all_simclr)*100:.2f}%")
 
 
 if __name__ == "__main__":

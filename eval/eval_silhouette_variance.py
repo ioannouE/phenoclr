@@ -67,7 +67,7 @@ def filter_classes(labels, min_samples=2):
     return mask, valid_classes
 
 def analyze_embeddings(embeddings_csv, output_dir, num_samples=None, random_seed=42, calculate_r_squared=False):
-    """Analyze SimCLR embeddings and calculate metrics."""
+    """Analyze PhenoCLR embeddings and calculate metrics."""
     
     # Load embeddings
     print("\nLoading embeddings...")
@@ -173,7 +173,7 @@ def analyze_embeddings(embeddings_csv, output_dir, num_samples=None, random_seed
     print(f"\nResults saved to {output_file}")
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Analyze SimCLR embeddings')
+    parser = argparse.ArgumentParser(description='Analyze PhenoCLR embeddings')
     parser.add_argument('--embeddings', help='Path to CSV file containing embeddings')
     parser.add_argument('--output', help='Directory to save results')
     parser.add_argument('--num-samples', type=int, help='Number of random samples to analyze. If not specified, uses all samples.')

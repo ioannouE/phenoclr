@@ -9,12 +9,11 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 # Add project root to the Python path
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
-# Assuming the project structure allows this import
-from simclr.scripts.hyperspectral_data import HyperspectralBilDataset
+from data.hyperspectral_data import HyperspectralBilDataset
 
 def calculate_channel_stats(dataloader, num_channels):
     """Calculates mean and variance for each channel in the dataset."""

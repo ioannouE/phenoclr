@@ -1,10 +1,8 @@
 data:
-  data_dir: "/fastdata/bi1ei/Passerines-Segmented-Back-RGB-PNG" # Passerines-Segmented-Back-RGB-PNG"
-  # data_dir: "/mnt/xdrive/cooney_lab/Shared/RSE/Image_sets/Passerines-Segmented-Back-RGB-PNG"
+  data_dir: "path/to/data/Passerines-Segmented-Back-RGB-PNG"
 
 output:
   out_dir: "embeddings/10_embeddings"
-  # out_dir: "/mnt/xdrive/cooney_lab/Shared/RSE/01_embeddings"
 
 model:
   name: 'simclr'  # not yet configurable

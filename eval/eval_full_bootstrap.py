@@ -5,7 +5,7 @@ statistical error bars (mean +/- std, percentile CI) for both.
 
 This script is a superset of `eval_silhouette_variance_bootstrap.py`: the
 embedding-space logic is identical (same point-estimate + subsampling
-bootstrap procedure). It additionally runs the SimCLR / LPIPS forward passes
+bootstrap procedure). It additionally runs the PhenoCLR / LPIPS forward passes
 on the BAPPS 2AFC and JND datasets *once* to collect per-example scores, then
 bootstraps those pre-computed per-example arrays (resampling with
 replacement) to get statistical errors for:
@@ -400,7 +400,7 @@ def run_2afc_bootstrap(args, device, simclr_model, lpips_model, n_bootstrap, ci,
             tag = f"simclr_{args.simclr_distance}{'_unnorm' if args.no_simclr_normalize else ''}"
             per_subset[subset]['simclr'] = raw
             point[subset]['simclr'] = acc
-            print(f"[2AFC] SimCLR[{args.simclr_distance}] {subset:>16}: {acc*100:.2f}% (n={len(raw)})")
+            print(f"[2AFC] PhenoCLR[{args.simclr_distance}] {subset:>16}: {acc*100:.2f}% (n={len(raw)})")
 
     methods = sorted({m for d in per_subset.values() for m in d.keys()})
     valid_subsets = list(per_subset.keys())
@@ -503,7 +503,7 @@ def run_jnd_bootstrap(args, device, simclr_model, lpips_model, n_bootstrap, ci, 
             tag = f"simclr_{args.simclr_distance}{'_unnorm' if args.no_simclr_normalize else ''}"
             per_subset[subset]['simclr'] = (scores, y_true)
             point[subset]['simclr'] = m
-            print(f"[JND] SimCLR[{args.simclr_distance}] {subset:>16}: AUC={m['roc_auc']*100:.2f}%, "
+            print(f"[JND] PhenoCLR[{args.simclr_distance}] {subset:>16}: AUC={m['roc_auc']*100:.2f}%, "
                   f"Acc@best={m['acc_best_t']*100:.2f}% (n={len(scores)})")
 
     methods = sorted({meth for d in per_subset.values() for meth in d.keys()})
@@ -662,7 +662,7 @@ def main():
     parser.add_argument('--lpips-net', type=str, default='alex', choices=['alex', 'vgg', 'squeeze'])
     parser.add_argument('--lpips-size', type=int, default=256)
 
-    parser.add_argument('--eval-simclr', action='store_true', help='Evaluate SimCLR embeddings')
+    parser.add_argument('--eval-simclr', action='store_true', help='Evaluate PhenoCLR embeddings')
     parser.add_argument('--simclr-checkpoint', type=str, default=None)
     parser.add_argument('--simclr-config', type=str, default=None)
     parser.add_argument('--simclr-module', type=str, default='train.simclr_birdcolour_multispectral')

@@ -1,77 +1,63 @@
-# Evaluating SimCLR embeddings for Perceptual Judgement
+# Perceptual evaluation of PhenoCLR embeddings
 
-This directory contains code for evaluating SimCLR embeddings for perceptual judgement using the Berkeley-Adobe Perceptual Patch Similarity (BAPPS) dataset. The dataset is introduced in the LPIPS paper (*"The Unreasonable Effectiveness of Deep Features as a Perceptual Metric"*). Code for LPIPS and for downloading the BAPPS dataset is available in the [LPIPS repository](https://github.com/richzhang/PerceptualSimilarity).
+This directory evaluates how well distances between PhenoCLR embeddings agree with human perceptual similarity judgements. It uses the Berkeley-Adobe Perceptual Patch Similarity (BAPPS) dataset from the LPIPS paper (*"The Unreasonable Effectiveness of Deep Features as a Perceptual Metric"*). LPIPS is supervised on human judgements, so it serves as a reference. PhenoCLR is trained without any perceptual supervision.
 
-## Usage
-
-### 2AFC evaluation
-BAPPS contains Triplets of small patches: a reference `x`, and two candidates `x0`, `x1`, plus the human answer “which is closer to x?”. The metric “wins” if it picks the same candidate as humans.
-
-- LPIPS distance: `d = LPIPS(x, y)` (lower = more similar).
-
-- SimCLR distance: compute embeddings `f(x)`, `f(y)`; `L2-normalize` then use cosine distance
-`d = 1 − cos( f̂(x), f̂(y) )`. (Or use euclidean distance `d = ||f̂(x) - f̂(y)||`)
-
-#### Primary score
-2AFC accuracy = `%` triplets where the metric agrees with the human choice.
-
-#### Secondary scores [TODO]
-Agreement vs. vote strength (when BAPPS provides human vote proportions): Spearman correlation between the SimCLR scores `|d(x,x1)-d(x,x0)|` and the human vote imbalance.
-
+The code for LPIPS and for downloading BAPPS is in the [PerceptualSimilarity repository](https://github.com/richzhang/PerceptualSimilarity):
 
 ```bash
-python eval_bapps_2afc.py --ckpt_path <path_to_ckpt> --config_path <path_to_config> --subset_dir <path_to_subset_dir> --device <device> --input_size <input_size> --batch_size <batch_size> --num_workers <num_workers> --distance <distance> --normalize <normalize>
+git clone https://github.com/richzhang/PerceptualSimilarity
+cd PerceptualSimilarity && bash scripts/download_dataset.sh   # creates dataset/2afc and dataset/jnd
 ```
 
-### Arguments
+Run the commands below from the repository root.
 
-- `ckpt_path`: Path to the checkpoint of the SimCLR model.
-- `config_path`: Path to the config file used for training the SimCLR model.
-- `subset_dir`: Path to the BAPPS subset directory.
-- `device`: Device to use for evaluation (e.g. 'cuda' or 'cpu').
-- `input_size`: Input size for the SimCLR model.
-- `batch_size`: Batch size for evaluation.
-- `num_workers`: Number of workers for data loading.
-- `distance`: Distance metric to use for evaluation (e.g. 'cosine' or 'euclidean').
-- `normalize`: Whether to normalize the embeddings before evaluation.
+## Distances
 
-### 2AFC Results
+- **LPIPS:** `d = LPIPS(x, y)`; lower means more similar.
+- **PhenoCLR:** backbone features `f(x)`, `f(y)` are L2-normalised and compared with cosine distance `d = 1 − cos(f̂(x), f̂(y))`. Pass `--simclr-distance euclidean` for `d = ‖f̂(x) − f̂(y)‖`, and `--no-simclr-normalize` to skip normalisation.
 
-| Dataset        | LPIPS (alex) | SimCLR (cosine, norm) |
-| :------------- | ------------:| ---------------------:|
-| val/cnn        | 82.72%       | 77.74%                |
-| val/traditional| 74.20%       | 73.57%                |
-| val/superres   | 70.44%       | 69.70%                |
-| val/deblur     | 60.19%       | 58.92%                |
-| **val/color**      | **62.46%**       | **62.93%**                |
-| val/frameinterp| 62.84%       | 62.84%                |
-| **OVERALL**       | **68.81%**       | **67.62%**                |
+## 2AFC
 
-
-### JND Evaluation
-JND evaluation is based on the JND dataset (of BAPPS) containing pairs of images (one reference and one distorted) and the human answer “are the images the same?”.
+Each BAPPS 2AFC item is a triplet: a reference patch `x` and two distorted patches `x0` and `x1`, together with the human answer to "which is closer to `x`?". A metric scores a point when it picks the same patch as the humans. The reported score is the **2AFC accuracy**: the percentage of triplets on which the metric agrees with the human choice.
 
 ```bash
-python eval_bapps_jnd.py --ckpt_path <path_to_ckpt> --config_path <path_to_config> --subset_dir <path_to_subset_dir> --device <device> --input_size <input_size> --batch_size <batch_size> --num_workers <num_workers> --distance <distance> --normalize <normalize>
+python perception_eval/eval_bapps_2afc.py \
+    --bapps-root /path/to/PerceptualSimilarity/dataset/2afc \
+    --eval-lpips --lpips-net alex \
+    --eval-simclr --simclr-checkpoint /path/to/phenoclr.ckpt \
+    --simclr-module train.simclr_birdcolour_RGB \
+    --simclr-distance cosine
 ```
 
-### Arguments
-JND evaluation arguments:
+## JND
 
-- `ckpt_path`: Path to the checkpoint of the SimCLR model.
-- `config_path`: Path to the config file used for training the SimCLR model.
-- `subset_dir`: Path to the BAPPS subset directory.
-- `device`: Device to use for evaluation (e.g. 'cuda' or 'cpu').
-- `input_size`: Input size for the SimCLR model.
-- `batch_size`: Batch size for evaluation.
-- `num_workers`: Number of workers for data loading.
-- `distance`: Distance metric to use for evaluation (e.g. 'cosine' or 'euclidean').
-- `normalize`: Whether to normalize the embeddings before evaluation.
+Each BAPPS JND item is a pair of patches (a reference and a distorted version) together with the human answer to "are the images the same?". Results are reported as ROC-AUC and as accuracy at the best threshold.
 
-### JND Results
+```bash
+python perception_eval/eval_bapps_jnd.py \
+    --bapps-root /path/to/PerceptualSimilarity/dataset/jnd \
+    --eval-lpips --lpips-net alex \
+    --eval-simclr --simclr-checkpoint /path/to/phenoclr.ckpt \
+    --simclr-module train.simclr_birdcolour_RGB \
+    --simclr-distance euclidean
+```
 
-| Dataset        | LPIPS [alex] (AUC) | LPIPS [alex] (Acc@best) | SimCLR [euclidean] (AUC) | SimCLR [euclidean] (Acc@best) |
-| :------------- | ------------------:| -----------------:| ---------------------:| ---------------:|
-| val/cnn        | 88.78%             | 82.15%            | 81.79%                | 77.46%          |
-| val/traditional| 83.21%             | 80.00%            | 87.78%                | 83.85%          |
-| **Overall**    | **86.00%**         | –                 | **84.79%**            | –               |
+## Arguments
+
+| Argument | Description |
+| --- | --- |
+| `--bapps-root` | BAPPS `2afc` or `jnd` directory |
+| `--subsets` | Subsets to evaluate. 2AFC default: all six `val/*` subsets. JND default: auto-discover. |
+| `--eval-lpips`, `--lpips-net {alex,vgg,squeeze}`, `--lpips-size` | Evaluate the LPIPS baseline |
+| `--eval-simclr` | Evaluate a PhenoCLR checkpoint |
+| `--simclr-checkpoint` | Path to the PhenoCLR Lightning checkpoint (`.ckpt`) |
+| `--simclr-module` | Training module that defines the checkpoint's `SimCLRModel`, e.g. `train.simclr_birdcolour_RGB` or `train.simclr_birdcolour_multispectral` (default) |
+| `--simclr-config` | Optional config override. By default, the config embedded in the checkpoint is used. |
+| `--simclr-input-size` | Resize resolution for the backbone input (default 224) |
+| `--simclr-distance {cosine,euclidean}`, `--no-simclr-normalize` | Distance settings |
+| `--device {cpu,cuda,mps}`, `--batch-size`, `--num-workers` | Runtime settings |
+| JND only: `--positive-label`, `--judge-threshold`, `--jnd-{p0,p1,same}-dir`, `--jnd-same-exts` | JND label handling |
+
+The `--simclr-*` flag names are kept for compatibility with existing scripts. They refer to the PhenoCLR model.
+
+To compute bootstrapped confidence intervals for both evaluations, run [`eval/eval_full_bootstrap.py --run-perceptual`](../eval/eval_full_bootstrap.py).

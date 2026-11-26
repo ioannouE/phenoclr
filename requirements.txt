@@ -1,0 +1,40 @@
+# PhenoCLR — Python >= 3.10
+# Install PyTorch first for your CUDA version: https://pytorch.org/get-started/locally/
+torch>=2.5
+torchvision>=0.20
+
+# Self-supervised learning and training
+lightly>=1.5.17
+lightning>=2.5
+pytorch-lightning>=2.5
+kornia>=0.8
+albumentations>=2.0
+
+# Data I/O (multispectral GeoTIFF / hyperspectral BIL)
+rasterio>=1.4
+tifffile>=2025.1.10
+spectral
+opencv-python
+pillow>=11.1
+pyyaml>=6.0
+pytz
+
+# Analysis and evaluation
+numpy>=1.26
+pandas>=2.3
+scipy>=1.15
+scikit-learn>=1.6
+scikit-bio>=0.6.3          # Mantel tests
+scikit-image>=0.25
+umap-learn>=0.5.7
+networkx>=3.4
+lpips>=0.1.4               # LPIPS baseline for perceptual evaluation
+matplotlib>=3.7
+tqdm>=4.67
+
+# Optional
+wandb>=0.19                # experiment logging (--wandb)
+ray[tune]>=2.41            # hyperparameter search (train/hyperparameter_tuning)
+requests                   # download_spectral_data.py
+beautifulsoup4             # download_spectral_data.py
+numba                      # eval/simclr_embedding_eval_var_optimised.py

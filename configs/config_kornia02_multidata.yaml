@@ -1,15 +1,13 @@
 data:
   data_dirs:
-  - "/shared/cooney_lab/Shared/Chris-Cooney/Data/Image-sets/Segmented-Aves-Back-RGB-PNG"
-  - "/shared/cooney_lab/Shared/Chris-Cooney/Data/Image-sets/Segmented-Aves-Side-RGB-PNG"
-  - "/shared/cooney_lab/Shared/Chris-Cooney/Data/Image-sets/Segmented-Aves-Belly-RGB-PNG"
+  - "path/to/data/Segmented-Aves-Back-RGB-PNG"
+  - "path/to/data/Segmented-Aves-Side-RGB-PNG"
+  - "path/to/data/Segmented-Aves-Belly-RGB-PNG"
 
-  data_dir: "/shared/cooney_lab/Shared/Chris-Cooney/Data/Image-sets/Segmented-Aves-Back-RGB-PNG" # "/shared/cooney_lab/Shared/data/Perceptual_maps_Heliconiini/Images/"
-  # data_dir: "/mnt/xdrive/cooney_lab/Shared/RSE/Image_sets/Passerines-Segmented-Back-RGB-PNG"
+  data_dir: "path/to/data/Segmented-Aves-Back-RGB-PNG"
 
 output:
-  out_dir: "/shared/cooney_lab/Shared/Eleftherios-Ioannou/SimCLR/RGB_Segmented_Aves_embeddings/"
-  # out_dir: "/mnt/xdrive/cooney_lab/Shared/RSE/01_embeddings"
+  out_dir: "path/to/output/RGB_Segmented_Aves_embeddings/"
 
 model:
   name: 'simclr'  # not yet configurable

@@ -136,7 +136,7 @@ def summarize_bootstrap(values, ci=0.95):
 
 def analyze_embeddings(embeddings_csv, output_dir, num_samples=None, random_seed=42,
                         n_bootstrap=1000, ci=0.95, replacement=False, subsample_frac=0.8):
-    """Analyze SimCLR embeddings and calculate metrics with bootstrap-based statistical variance."""
+    """Analyze PhenoCLR embeddings and calculate metrics with bootstrap-based statistical variance."""
 
     min_samples_per_class = 2
 
@@ -280,7 +280,7 @@ def analyze_embeddings(embeddings_csv, output_dir, num_samples=None, random_seed
     print(f"Raw bootstrap values saved to {raw_file}")
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Analyze SimCLR embeddings with bootstrap statistical variance')
+    parser = argparse.ArgumentParser(description='Analyze PhenoCLR embeddings with bootstrap statistical variance')
     parser.add_argument('--embeddings', help='Path to CSV file containing embeddings')
     parser.add_argument('--output', help='Directory to save results')
     parser.add_argument('--num-samples', type=int, help='Number of random samples to analyze. If not specified, uses all samples.')

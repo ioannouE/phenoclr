@@ -15,6 +15,10 @@ import re
 import csv
 import matplotlib.pyplot as plt
 import json
+# Make the training scripts in train/ importable
+import sys
+_project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, os.path.join(_project_root, 'train'))
 from simclr_birdcolour_kornia02 import SimCLRModel, SimCLRDataModule, plot_knn_examples
 
 

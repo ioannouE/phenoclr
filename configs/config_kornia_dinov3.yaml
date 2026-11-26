@@ -1,8 +1,8 @@
 data:
-  data_dir: "/shared/cooney_lab/Shared/data/multi_part_seg/natural_birds/cefe/ori_segmented_cropped/cropped_transparent/"
+  data_dir: "path/to/data/cropped_transparent/"
 
 output:
-  out_dir: "/shared/cooney_lab/Shared/Eleftherios-Ioannou/SimCLR/RGB_CEFE_embeddings/"
+  out_dir: "path/to/output/RGB_CEFE_embeddings/"
 
 model:
   name: 'simclr_dinov3'
@@ -11,7 +11,7 @@ model:
   dinov3:
     repo: "facebookresearch/dinov3"  # torch.hub repo
     arch: "dinov3_vitl16"  # Architecture: dinov3_vits16, dinov3_vitb16, dinov3_vitl16, dinov3_vit7b16
-    weights_path: "/fastdata/bi1ei/dinov3/dinov3_vitl16_pretrain_lvd1689m-8aa4cbdd.pth"  # Path to downloaded weights
+    weights_path: "path/to/dinov3/dinov3_vitl16_pretrain_lvd1689m-8aa4cbdd.pth"  # Path to downloaded weights
     source: "auto"  # auto, github, or local
 
   optimizer:

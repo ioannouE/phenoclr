@@ -26,6 +26,11 @@ from typing import Dict, Any
 import torch
 import yaml
 
+# Make the training scripts in train/ importable
+import sys
+_project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, os.path.join(_project_root, 'train'))
+
 # Import your Lightning SimCLR model with DinoV3 backbone
 from simclr_birdcolour_kornia_dino import SimCLRModel
 

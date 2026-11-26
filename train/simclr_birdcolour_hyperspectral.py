@@ -947,7 +947,7 @@ def main(args):
         os.environ["WANDB_CONSOLE"] = "off"
         wandb.init(
             name=f"simclr_hyp_{config['model'].get('backbone', 'vit')}_{timestamp}",
-            project="simclr",
+            project="phenoclr",
             dir=os.path.join(config["output"]["out_dir"], "wandb"),
         )
     
