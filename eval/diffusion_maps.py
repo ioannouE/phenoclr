@@ -22,19 +22,8 @@ def get_thumbnail(path, size=(100, 100)):
 
 
 # === Step 1: Load embeddings CSV ===
-csv_path = "ViT_embeddings/embeddings_config_kornia02_20250328T1803.csv" 
-image_dir = "/Volumes/shared/cooney_lab/Shared/RSE/Image_sets/Passerines-Segmented-Back-RGB-PNG" 
-
-# shape color embeddings MAE
-# csv_path = "/Volumes/shared/cooney_lab/Shared/Eleftherios-Ioannou/mae/embeddings/mae_embeddings_20250407_104621_shape_color.csv" # "ViT_embeddings/embeddings_config_kornia02_20250328T1803.csv"  # <-- Update this path
-# image_dir = "/Volumes/shared/cooney_lab/Shared/data/synth_data/shape_colour/images" 
-
-# # synth data embeddings SimCLR
-# csv_path = "/Volumes/shared/cooney_lab/Shared/Eleftherios-Ioannou/SimCLR/synthetic_data_embeddings/simclr/config_kornia02_20250404T1614/embeddings_config_kornia02_20250404T1614.csv"
-
-
-csv_path = "/Volumes/shared/cooney_lab/Shared/Eleftherios-Ioannou/SimCLR/synthetic_data_embeddings/simclr/3808684_config_kornia02_20250411T1503/embeddings_config_kornia02_20250411T1503.csv"
-image_dir = "/Volumes/shared/cooney_lab/Shared/data/synth_data/shape_colour_transparent" 
+csv_path = "path/to/embeddings.csv"
+image_dir = "path/to/images"
 
 df = pd.read_csv(csv_path)
 

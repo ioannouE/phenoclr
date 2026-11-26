@@ -97,7 +97,7 @@ def draw_graph_with_images(G, thumbnails, layout="spring", figsize=(10, 10), zoo
 
 
 csv_path = "ViT_embeddings/embeddings_config_kornia02_20250328T1803.csv" 
-image_dir = "/Volumes/shared/cooney_lab/Shared/RSE/Image_sets/Passerines-Segmented-Back-RGB-PNG" 
+image_dir = "path/to/images"
 
 subset_size = 1000
 top_n = 16  # number of top-ranked images to visualize

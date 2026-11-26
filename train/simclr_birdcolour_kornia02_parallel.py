@@ -33,7 +33,7 @@ from tqdm import tqdm
 
 import tempfile
 # Set temporary directory on same filesystem as checkpoint destination
-tmpdir = "/shared/cooney_lab/Shared/Eleftherios-Ioannou/tmp"
+tmpdir = os.environ.get("PHENOCLR_TMPDIR", tempfile.gettempdir())
 os.environ["TMPDIR"] = tmpdir
 os.environ["FSSPEC_TEMP"] = tmpdir
 tempfile.tempdir = tmpdir

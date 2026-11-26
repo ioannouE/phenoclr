@@ -32,7 +32,7 @@ import torchvision.transforms.v2 as v2
 
 import tempfile
 # Set temporary directory on same filesystem as checkpoint destination - needed for Bessemer
-# tmpdir = "/shared/cooney_lab/Shared/Eleftherios-Ioannou/tmp"
+# tmpdir = "path/to/tmp"
 # os.environ["TMPDIR"] = tmpdir
 # os.environ["FSSPEC_TEMP"] = tmpdir
 # tempfile.tempdir = tmpdir

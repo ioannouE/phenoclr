@@ -633,7 +633,7 @@ if __name__ == "__main__":
     # Example configuration
     config = {
         "data": {
-            "data_dir": "/shared/cooney_lab/Shared/data/hyperspectral/lepidoptera"
+            "data_dir": "path/to/data/lepidoptera"
         },
         "dataloader": {
             "batch_size": 16,

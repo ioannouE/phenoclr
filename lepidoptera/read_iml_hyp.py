@@ -478,5 +478,5 @@ if __name__ == "__main__":
     # image, wavelengths, scan_info, gain_value = read_iml_hyp("/path/to/folder", "filename_without_extension")
     
     # To test visualization:
-    test_load_and_visualize("/Volumes/shared/cooney_lab/Shared/data/hyperspectral/lepidoptera", "Abraxas fulvobasalis_1D_040917", "./")
+    test_load_and_visualize("path/to/data/lepidoptera", "Abraxas fulvobasalis_1D_040917", "./")
     pass
